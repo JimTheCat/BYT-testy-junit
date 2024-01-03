@@ -25,7 +25,7 @@ public class Currency {
 	 * @return The value of amount in the "universal currency"
 	 */
 	public Integer universalValue(Integer amount) {
-        return (int) (amount * 100 / this.rate);
+        return (int) (amount / this.rate);
 	}
 
 	/** Get the name of this Currency.
@@ -57,7 +57,7 @@ public class Currency {
 	 * @param othercurrency The other Currency
 	*/
 	public Integer valueInThisCurrency(Integer amount, Currency othercurrency) {
-        int universalValue = (int) (amount * 100 / othercurrency.getRate());
+        int universalValue = (int) (amount / othercurrency.getRate());
         return (int) (universalValue * this.rate);
 	}
 }
