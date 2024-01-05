@@ -38,9 +38,9 @@ public class Money implements Comparable {
 	 * above is actually represented as the integer 1050
 	 *  @return String representing the amount of Money.
 	 */
+	@Override
 	public String toString() {
-		NumberFormat numberFormat = NumberFormat.getInstance();
-		return numberFormat.format(this.amount) + " " + this.getCurrency().getName();
+		return this.amount / 100.0 + " " + this.currency.getName();
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class Money implements Comparable {
 	 * @return The value of the Money in the "universal currency".
 	 */
 	public Integer universalValue() {
-		return (int) (this.getAmount() / this.getCurrency().getRate());
+		return this.currency.universalValue(this.amount);
 	}
 
 	/**
@@ -67,8 +67,7 @@ public class Money implements Comparable {
 	 * (Remember to convert the other Money before adding the amounts)
 	 */
 	public Money add(Money other) {
-		double summedValues = this.universalValue() + other.universalValue();
-		this.amount = (int) (summedValues * this.getCurrency().getRate());
+		this.amount += this.getCurrency().valueInThisCurrency(other.getAmount(), other.getCurrency());
 		return this;
 	}
 
@@ -79,8 +78,7 @@ public class Money implements Comparable {
 	 * (Again, remember converting the value of the other Money to this Currency)
 	 */
 	public Money sub(Money other) {
-		double subtractedValues = this.universalValue() - other.universalValue();
-		this.amount = (int) (subtractedValues * this.getCurrency().getRate());
+		this.amount -= this.getCurrency().valueInThisCurrency(other.getAmount(), other.getCurrency());
 		return this;
 	}
 
@@ -110,13 +108,12 @@ public class Money implements Comparable {
 	 * A positive integer if this Money is more valuable than the other Money.
 	 */
 	@Override
-	public int compareTo(Object o) {
-		if (!(o instanceof Money)) try {
-			throw new Exception("Object not supported");
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+	public int compareTo(Object other) {
+		if (!(other instanceof Money otherMoney)) {
+			throw new IllegalArgumentException("Argument must be of type Money");
 		}
-
-		return Integer.compare(this.universalValue(), ((Money) o).universalValue());
+		return (int) this.universalValue().compareTo(otherMoney.universalValue());
 	}
+
+
 }

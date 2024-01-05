@@ -40,9 +40,9 @@ public class CurrencyTest {
 		double dkkName = DKK.getRate();
 		double eurName = EUR.getRate();
 
-		assertSame("Rate of currency is not correct", 0.15, sekName);
-		assertSame("Rate of currency is not correct", 0.20, dkkName);
-		assertSame("Rate of currency is not correct", 1.5, eurName);
+        assertEquals("Rate of currency is not correct", 0, Double.compare(sekName, 0.15));
+        assertEquals("Rate of currency is not correct", 0, Double.compare(dkkName, 0.20));
+        assertEquals("Rate of currency is not correct", 0, Double.compare(eurName, 1.5));
 	}
 
 	/**
@@ -58,9 +58,9 @@ public class CurrencyTest {
 		DKK.setRate(newDKKRate);
 		EUR.setRate(newEURRate);
 
-		assertSame("Rate of currency is not correct", newSEKRate, SEK.getRate());
-		assertSame("Rate of currency is not correct", newDKKRate, DKK.getRate());
-		assertSame("Rate of currency is not correct", newEURRate, EUR.getRate());
+        assertEquals("Rate of currency is not correct", 0, Double.compare(newSEKRate, SEK.getRate()));
+        assertEquals("Rate of currency is not correct", 0, Double.compare(newDKKRate, DKK.getRate()));
+        assertEquals("Rate of currency is not correct", 0, Double.compare(newEURRate, EUR.getRate()));
 	}
 
 	/**
@@ -70,16 +70,16 @@ public class CurrencyTest {
 	public void testGlobalValue() {
 		int amountToConvert = 40;
 
-		double eurUniversalValue = EUR.universalValue(amountToConvert);
-		double eurExpectedValue = amountToConvert / EUR.getRate();
-		double dkkUniversalValue = DKK.universalValue(amountToConvert);
-		double dkkExpectedValue = amountToConvert / DKK.getRate();
-		double sekUniversalValue = SEK.universalValue(amountToConvert);
-		double sekExpectedValue = amountToConvert / SEK.getRate();
+		int eurUniversalValue = EUR.universalValue(amountToConvert);
+		int eurExpectedValue = (int) (amountToConvert / EUR.getRate());
+		int dkkUniversalValue = DKK.universalValue(amountToConvert);
+		int dkkExpectedValue = (int) (amountToConvert / DKK.getRate());
+		int sekUniversalValue = SEK.universalValue(amountToConvert);
+		int sekExpectedValue = (int) (amountToConvert / SEK.getRate());
 
-		assertSame("Universal value is wrongly calculated", eurExpectedValue, eurUniversalValue);
-		assertSame("Universal value is wrongly calculated", dkkExpectedValue, dkkUniversalValue);
-		assertSame("Universal value is wrongly calculated", sekExpectedValue, sekUniversalValue);
+		assertEquals("Universal value is wrongly calculated", eurExpectedValue, eurUniversalValue);
+		assertEquals("Universal value is wrongly calculated", dkkExpectedValue, dkkUniversalValue);
+		assertEquals("Universal value is wrongly calculated", sekExpectedValue, sekUniversalValue);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class CurrencyTest {
 		int convertedDKKValue = DKK.valueInThisCurrency(amountToConvert, EUR);
 		int expectedDKKValue = (int) (EUR.universalValue(amountToConvert) * DKK.getRate());
 
-		assertSame("Method seems to be wrong", expectedDKKValue, convertedDKKValue);
+		assertEquals("Method seems to be wrong", expectedDKKValue, convertedDKKValue);
 	}
 
 }
